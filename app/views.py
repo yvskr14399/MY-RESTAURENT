@@ -1,6 +1,7 @@
 from operator import itemgetter
 from django.shortcuts import render
 from django.db.models import Q
+import datetime
 # Create your views here.
 
 from app.models import *
@@ -12,7 +13,9 @@ from app.forms import *
 def home(request):
     return render(request,'HOME.html')
 def menu(request):
-    return render(request,'MENU.html')
+    menuobj=Menu.objects.all()
+    d={'menu':menuobj}
+    return render(request,'MENU.html',d)
 
 def about(request): 
     return render(request,'ABOUT.html')
@@ -49,7 +52,7 @@ def detailed_daily_report(request):
         if newdate.is_valid():
             day=newdate.cleaned_data['date']
             detaileddailyreport=Order.objects.filter(date=day)
-            d={'report':detaileddailyreport}
+            d={'report':detaileddailyreport,'detailed_daily_report':'detailed_daily_report'}
             return render(request,'RECORDS.HTML',d)
     return render(request,'dateform.html',d)
 
@@ -62,6 +65,7 @@ def daily_report(request):
             day=newdate.cleaned_data['date']
             menuobj=Menu.objects.all()
             Report.objects.all().delete()
+            
             for i in menuobj:
                  totalqty=0
                  detaileddailyreport=Order.objects.filter(Q(date=day)&Q(item=i))
@@ -69,7 +73,7 @@ def daily_report(request):
                     totalqty+=j.qty
                  reportobj=Report.objects.create(date=day,item=i,price=i.price,qty=totalqty,amount=i.price*totalqty)
             reports=Report.objects.all()
-            d={'report':reports}
+            d={'report':reports,'daily_report':'daily_report'}
             return render(request,'RECORDS.HTML',d)
     return render(request,'dateform.html',d)
 
@@ -83,6 +87,8 @@ def monthly_report(request):
         newmonth=Month_form(request.POST)
         if newmonth.is_valid():
             month=newmonth.cleaned_data['month']
+            #formatDate = month.strftime("%B")
+            print('qwertyuiowertyhjukilsdfghjksdfghjkldfghjkldxcfgvhbjnkml,xdcfgvbhnjkm,xdcfvg'+month)
             menuobj=Menu.objects.all()
             Report.objects.all().delete()
             for i in menuobj:
@@ -138,7 +144,46 @@ def yearly_report(request):
                  for j in detaileddailyreport:
                     totalqty+=j.qty
                  reportobj=Report.objects.create(date=year,item=i,price=i.price,qty=totalqty,amount=i.price*totalqty)
-            reports=Report.objects.all()
-            d={'report':reports}            
+            yearlyreports=Report.objects.all()
+            d={'report':yearlyreports}            
             return render(request,'RECORDS.HTML',d)
+    return render(request,'dateform.html',d)
+
+def custom_report(request):
+    customform=Custom_form()
+    d={'getdate':customform}
+    if request.method=='POST':
+        newcustom=Custom_form(request.POST)
+        if newcustom.is_valid():
+            day1=newcustom.cleaned_data['from_date']
+            day2=newcustom.cleaned_data['to_date']
+            itemlist=newcustom.cleaned_data['items']
+            Report.objects.all().delete()
+            l=[]
+            for i in itemlist:
+                orderobj=Order.objects.filter(Q(date__gte=day1)&Q(date__lte=day2)&Q(item=i))
+                l.extend(orderobj)
+            
+            for i in range(0,len(l)-1):
+                for j in range(0,len(l)-1):
+                    if l[j].date>l[j+1].date:
+                        l[j],l[j+1]=l[j+1],l[j]
+
+            d={'report':l}
+            return render(request,'RECORDS.HTML',d)
+    return render(request,'dateform.html',d)
+
+def addMenuItem(request):
+    additem=Menu_item()
+    d={'getdate':additem}
+    if request.method=='POST':
+        itemobj=Menu_item(request.POST)
+        if itemobj.is_valid():
+            item=itemobj.cleaned_data['item']
+            item=item.upper()
+            price=itemobj.cleaned_data['price']
+            newitem=Menu.objects.create(item=item,price=price)
+            newitem.save()
+            d={'newitem':newitem}
+            
     return render(request,'dateform.html',d)

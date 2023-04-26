@@ -19,8 +19,8 @@
 
         body{
             background-image: url(../static/images/R.jpg);
-            background-repeat: no-repeat;
-            background-size: cover;
+            background-repeat:round; 
+            background-size:cover;
             position:static;
             }
         .login{
@@ -90,7 +90,7 @@
                     <td style="padding: 10px; text-align:center"><button class="btn btn-primary"><a href="{% url 'detailed_yearly_report' %}" style="color: white;">DETAILED-YEARLY-REPORT</a></button></td>
                 </tr>
                 <tr>
-                    <td style="padding: 10px; text-align:center; "colspan="3"  >  <button class="btn btn-primary"><a href="{% url 'detailed_monthly_report' %}" style="color: white;">CUSTOM-REPORT</a></button></td>
+                    <td style="padding: 10px; text-align:center; "colspan="3"  >  <button class="btn btn-primary"><a href="{% url 'custom_report' %}" style="color: white;">CUSTOM-REPORT</a></button></td>
                     <td></td>
                     
                     
@@ -101,13 +101,15 @@
         <section>
         <table style=" border:2px solid white" border="2">
             <tr>
-                <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; text-decoration:underline">DATE</th>
+                <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; text-decoration:underline">DATE/MONTH/YEAR</th>
                 <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; text-decoration:underline">ITEM</th>
                 <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:green; text-decoration:underline">PRICE</th>
                 <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; text-decoration:underline">QTY</th>
                 <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; text-decoration:underline">AMOUNT</th>
             </tr>
+           
             {% for i in report %}
+            {% if i.qty > 0 %}
             <tr>
                 <td  style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white">{{i.date}}</td>
                 <td  style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white">{{i.item}}</td>
@@ -115,7 +117,11 @@
                 <td  style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:red">{{i.qty}}</td>
                 <td  style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white">{{i.amount}}</td>
             </tr>
+            {% endif %}
             {% endfor %}
+
+            
+
             
         </table>
         <br>

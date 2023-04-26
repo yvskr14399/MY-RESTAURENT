@@ -30,6 +30,8 @@ urlpatterns = [
     path('daily_report/',daily_report,name='daily_report'),
     path('monthly_report/',monthly_report,name='monthly_report'),
     path('yearly_report/',yearly_report,name='yearly_report'),
+    path('custom_report/',custom_report,name='custom_report'),
+    path('addMenuItem/',addMenuItem,name='addMenuItem'),
   
     
 ]

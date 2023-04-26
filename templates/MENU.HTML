@@ -36,17 +36,9 @@
         h1{
             font-family:cursive
         }
-        .container{
-            border-width: 5px !important;
-        }
-        .menu{
-            position:relative;
-            top: 100px;
-            width: 600px !important;
-        }
-        .menu button{
-            width: 140px;
-        }
+        
+        
+
 
     </style>
 </head>
@@ -84,57 +76,27 @@
     </nav>
 
     <center>
+        <table style="width: 500px;">
+            <tr>
+                <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:red">ITEM</th>
+     
+                <th style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:red">QTY</th>
+            </tr>
+            </table>
+            <table style="width: 500px; border: 2px solid blue">
+            {% for i in menu %}
+            <tr>
+                <td style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; border: 2px solid blue">{{i.item}}</td>
+               
+                <td style="padding: 10px; width:200px; text-align:center; font-weight:bolder; color:white; border: 2px solid blue"> ~ Rs.{{i.price}}.00 /-</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br><br>
         
-        <div class="container border border-danger w-25 p-1 menu">
-            <div class="row m-3  ">
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="plane">PLANE</button>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="lemon">LEMON</button>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="ginger">GINGER</button>
-                </div>
-                
-
-            </div>
-            <div class="row m-3">
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="mint">MINT</button>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="mirchi">MIRCHI</button>
-                </div>
-                <div class="col-4">
-                    <button type="button" class="btn btn-info" value="jeera">JEERA</button>
-                </div>
-            </div> 
-            <div class="row m-3 ">
-                <div class="col-4">
-                        <button type="button" class="btn btn-info" value="black-salt">BLACK-SALT</button>
-                </div>
-                <div class="col-4">
-                        <button type="button" class="btn btn-info" value="black-pepper">BLACK-PEPPER</button>
-                </div>
-                <div class="col-4">
-                        <button type="button" class="btn btn-info" value="chat-masala">CHAT-MASALA</button>
-                </div>
-            </div>
-            <div class="row m-3">
-                <div class="col-4">
-                        <button type="button" class="btn btn-info" value="sabja">SABJA</button>
-                </div>
-                <div class="col-4">
-                        <button type="button" class="btn btn-info" value="ilaachi">ILAACHI</button>
-                </div>
-                <div class="col-4">
-                        <button type="button" class="btn btn-info " value="special">SPECIAL</button>
-                </div>
-            </div>
-        </div><br>
+        <a href="{% url 'addMenuItem' %}" class="btn btn-primary">ADD MENU-ITEM</a>
         
-        </center>
+    </center>
         
 
         <footer class="text-info text-weight-bold font-size-larger">

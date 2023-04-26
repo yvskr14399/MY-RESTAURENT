@@ -1,8 +1,9 @@
 from django.db import models
-
+from django.core import validators
 # Create your models here.
 class Menu(models.Model):
-    item=models.CharField(max_length=20,primary_key=True)
+    item=models.CharField(max_length=30,primary_key=True,)
+   
     price=models.IntegerField(default=20)
     def __str__(self) -> str:
         return self.item
